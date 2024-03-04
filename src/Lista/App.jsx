@@ -51,10 +51,12 @@ const App = () => {
         <h1>Lista kroków</h1>
       </header>
       <div className="container-md">
-        <div>
-          
+        <div className='mt-3 d-flex justify-content-center align-items-center'>
+          <h2>
+            {listName}
+          </h2>
         </div>
-        <div className='d-flex justify-content-center align-items-center mt-5'>
+        <div className='d-flex justify-content-center align-items-center mt-4'>
           <StepIcons steps={steps} actStep={actStep} />
         </div>
       </div>
