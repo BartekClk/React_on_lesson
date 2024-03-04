@@ -1,0 +1,19 @@
+.col>div{
+  border-radius: 10px;
+  height: 100px;
+  background-color: var(--bs-dark);
+  color: var(--bs-white);
+}
+.col>div.active{
+  background-color: var(--bs-primary);
+  color: var(--bs-white);
+}
+.col>div .back{
+  display: none;
+}
+.col>div.active .back{
+  display: block;
+}
+.col>div.active .front{
+  display: none;
+}
