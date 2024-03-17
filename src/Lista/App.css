@@ -1,3 +1,7 @@
+*{
+  transition-duration: 200ms;
+}
+
 .col>div{
   border-radius: 10px;
   height: 100px;
@@ -29,4 +33,15 @@
 .stepIcon.active{
   background-color: var(--bs-primary);
   color: var(--bs-white);
+}
+
+.PrevNextButton:hover{
+  background-color: var(--bs-primary);
+}
+
+.unselectable{
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
 }

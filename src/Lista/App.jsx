@@ -2,6 +2,14 @@ import React, { useState } from 'react';
 
 import './App.css';
 
+const P_NStepIcon = ({text, toDo}) =>{
+  return(
+    <div onClick={toDo} className={`stepIcon d-flex justify-content-center align-items-center mx-2 PrevNextButton unselectable`} >
+      {text}
+    </div>
+  );
+}
+
 const StepIcon = ({text, active}) =>{
   return(
     <div className={`stepIcon d-flex justify-content-center align-items-center mx-2 ${active? 'active' : ''} `} >
@@ -12,11 +20,19 @@ const StepIcon = ({text, active}) =>{
 
 const StepIcons = ({steps, actStep}) =>{
   return(
-    <div className='d-flex' >
+    <div className='d-flex unselectable' >
       {steps.map((item, index) => (
         <StepIcon key={index} text={item.id} active={index===actStep}/>
       ))}
     </div>
+  );
+}
+
+const Step  = ({steps, actStep}) =>{
+  return(
+    <h4 className='' >
+      {steps[actStep].title}
+    </h4>
   );
 }
 
@@ -57,7 +73,12 @@ const App = () => {
           </h2>
         </div>
         <div className='d-flex justify-content-center align-items-center mt-4'>
+          <P_NStepIcon text={"<"} toDo={prevStep}/>
           <StepIcons steps={steps} actStep={actStep} />
+          <P_NStepIcon text={">"} toDo={nextStep}/>
+        </div>
+        <div className='d-flex justify-content-center align-items-center mt-4'>
+          <Step steps={steps} actStep={actStep}/>
         </div>
       </div>
     </div>
