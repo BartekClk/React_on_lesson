@@ -1,0 +1,32 @@
+.col>div{
+  border-radius: 10px;
+  height: 100px;
+  background-color: var(--bs-dark);
+  color: var(--bs-white);
+}
+.col>div.active{
+  background-color: var(--bs-primary);
+  color: var(--bs-white);
+}
+.col>div .back{
+  display: none;
+}
+.col>div.active .back{
+  display: block;
+}
+.col>div.active .front{
+  display: none;
+}
+
+.stepIcon{
+  border-radius: 50px;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  background-color: var(--bs-dark);
+  color: var(--bs-white);
+}
+.stepIcon.active{
+  background-color: var(--bs-primary);
+  color: var(--bs-white);
+}
