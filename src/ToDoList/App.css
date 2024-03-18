@@ -1,0 +1,16 @@
+*{
+  transition-duration: 200ms;
+  transition-timing-function: ease-in-out;
+}
+
+tr.done > th, tr.done > td{
+  background-color: rgba(25, 135, 84) !important;
+  color: white;
+}
+
+.tableButton{
+  width: 40px;
+}
+.tableIndex{
+  width: 50px;
+}

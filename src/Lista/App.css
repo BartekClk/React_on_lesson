@@ -1,5 +1,6 @@
 *{
   transition-duration: 200ms;
+  transition-timing-function: ease-in-out;
 }
 
 .col>div{
@@ -36,6 +37,7 @@
 }
 
 .PrevNextButton:hover{
+  cursor: pointer;
   background-color: var(--bs-primary);
 }
 
@@ -44,4 +46,32 @@
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */
+}
+
+.close.active{
+  background-color: var(--bs-dark);
+  color: var(--bs-white);
+  transform: rotateZ(180deg);
+}
+
+.close{
+  z-index: 2;
+  transition-duration: 500ms;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: var(--bs-white);
+  color: var(--bs-dark);
+}
+.close:hover{
+  cursor: pointer;
+  background-color: var(--bs-primary);
+  color: var(--bs-white);
+}
+
+.content{
+  transition-duration: 500ms;
+}
+.content.closed{
+  transform: translateY(-100%);
 }
