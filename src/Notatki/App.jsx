@@ -3,28 +3,20 @@ import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faCircleHalfStroke, faCoffee, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const Step = ({el, index, setDone, removeStep, editStep}) => {
+const Step = ({el, index, removeStep, editStep, dark}) => {
   return (
-    <tr className={`${el.done ? 'done' : ''}`}>
-      <th scope="row">{index + 1}</th>
-      <td>{el.title}</td>
-      <td>{el.content}</td>
-      <td>
-        <button onClick={() => setDone(index)} type="button" className={`btn ${el.done ? 'btn-info' : 'btn-secondary'}`}>
-          <FontAwesomeIcon icon={faCheck}/>
-        </button>
-      </td>
-      <td>
+    <div className={`note col-3 m-2 p-3 ${dark? "dark" : "light"}`}>
+      <h5 className='title'>{el.title}</h5>
+      <div className='mt-3 text' >{el.content}</div>
+      <div className='d-flex mt-4' >
         <button onClick={()=>editStep(index)} type="button" className={"btn btn-secondary"}>
           <FontAwesomeIcon icon={faPenToSquare}/>
         </button>
-      </td>
-      <td>
-        <button onClick={()=>removeStep(index)} type="button" className={"btn btn-warning"}>
+        <button onClick={()=>removeStep(index)} type="button" className={"btn btn-warning ms-2"}>
           <FontAwesomeIcon icon={faTrash}/>
         </button>
-      </td>
-    </tr>
+      </div>
+    </div>
   );
 }
 
@@ -40,13 +32,6 @@ const App = () => {
     {done: 0, title: "Analiza wyników i wprowadzanie poprawek", content: "Po zakończeniu wszystkich kroków, ocena wyników i wprowadzenie ewentualnych korekt, aby poprawić efektywność w przyszłości." }
   ]);
 
-  const setDone = (index) => {
-    setSteps(prevSteps => {
-      const updatedSteps = [...prevSteps];
-      updatedSteps[index] = {...updatedSteps[index], done: !updatedSteps[index].done};
-      return updatedSteps;
-    });
-  }
   const removeStep = (index) => {
     setSteps(prevSteps => {
       const updatedSteps = [...prevSteps];
@@ -111,7 +96,7 @@ const App = () => {
     <div className={`app ${dark? "dark" : ""}`}>
       <Close dark={dark} toDo={Darken}/>
       <header className={`d-flex justify-content-center align-items-center py-2 app-header ${dark? "light" : "dark"} `}>
-        <h1>ToDo List</h1>
+        <h1>Notatki</h1>
       </header>
       <div className="container-md">
         <div className='d-flex justify-content-center align-items-center mt-4'>
@@ -126,24 +111,10 @@ const App = () => {
             </div>
           </div>
         </div>
-        <div className='d-flex justify-content-center align-items-center mt-4'>
-          <table className={`table align-middle ${dark? "dark" : ""} `}>
-            <thead>
-              <tr>
-                <th className='tableIndex' scope="col"></th>
-                <th scope="col">Tytuł</th>
-                <th scope="col">Treść</th>
-                <th className='tableButton' scope="col"></th>
-                <th className='tableButton' scope="col"></th>
-                <th className='tableButton' scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {steps.map((item, index) => (
-                <Step key={index} index={index} el={item} setDone={setDone} removeStep={removeStep} editStep={editStep}/>
-              ))}
-            </tbody>
-          </table>
+          <div className='d-flex row justify-content-center align-items-center mt-4'>
+            {steps.map((item, index) => (
+              <Step key={index} index={index} el={item} removeStep={removeStep} editStep={editStep} dark={dark}/>
+            ))}
         </div>
       </div>
     </div>

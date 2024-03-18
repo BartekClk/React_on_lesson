@@ -80,3 +80,20 @@ body{
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */
 }
+
+.note{
+  border-radius: 20px;
+  border: 1px solid black;
+  min-height: 260px;
+}
+
+.note.dark{
+  border: 1px solid white;
+}
+
+.note .text{
+  height: 100px;
+}
+.note .title{
+  height: 50px;
+}
