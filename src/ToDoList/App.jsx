@@ -119,7 +119,6 @@ const App = () => {
             <div className="input-group mb-3">
               <input type="text" className="form-control" placeholder="Tytuł" aria-label="title" aria-describedby="button-addon2" value={titleValue} onChange={(e)=>setTitleValue(e.target.value)}/>
               <input type="text" className="form-control" placeholder="Treść" aria-label="content" aria-describedby="button-addon2" value={contentValue} onChange={(e)=>setContentValue(e.target.value)}/>
-              {/* <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={edit? ()=>addStep(titleValue, contentValue) : ()=>updateStepValues(edit, titleValue, contentValue) }>{edit? "Zapisz" : "Dodaj"}</button> */}
               {edit? 
               <button className={`btn ${dark? "btn-outline-light" : "btn-outline-secondary"}`} type="button" id="button-addon2" onClick={()=>updateStepValues(edit-1, titleValue, contentValue)}>Zapisz</button>:
               <button className={`btn ${dark? "btn-outline-light" : "btn-outline-secondary"}`} type="button" id="button-addon2" onClick={()=>addStep(titleValue, contentValue)}>Dodaj</button>}
