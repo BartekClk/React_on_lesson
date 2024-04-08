@@ -1,27 +1,39 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import './App.css';
 
+import NavBar from './components/NavBar';
+import ErrorPage from './components/ErrorPage';
+import Posts from './components/Posts';
+import Users from './components/Users';
+
+// const router = createBrowserRouter([
+//   {
+//     element: <NavBar/>,
+//     children: [
+//       { path: "/posts", element: <Posts/> },
+//       { path: "/home", element: <Users/> },
+//       { path: "/*", element: <h1>Strona nie istnieje</h1> },
+//     ],
+//   },
+// ]);
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <NavBar />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/posts",
+        element: <h1>posts</h1>,
+      },
+    ],
+  },
+]);
+
 const App = () => {
-  const [title, setTitle] = useState("")
-  const [type, setType] = useState("")
-
-  const showData=()=>{
-    console.log("tytuł: "+title+"; rodzaj: "+type)
-  }
-
-  return (
-    <div className="app">
-      <Router>
-        <Routes>
-          <Route path="/" element={<h1>Home</h1>}></Route>
-          <Route path="/about" element={<h1>About</h1>}></Route>
-          <Route path="/contact" element={<h1>contact</h1>}></Route>
-          <Route path="/*" element={<h1>Nie ma takiej strony</h1>}></Route>
-        </Routes>
-      </Router>
-    </div>
-  );
+  return <RouterProvider router={router}/>
 };
 
 export default App;
