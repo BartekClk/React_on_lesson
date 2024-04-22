@@ -1,36 +1,36 @@
-import React, { useState } from 'react';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+  Redirect,useRouteMatch 
+} from "react-router-dom";
 import './App.css';
 
-import NavBar from './components/NavBar';
-import ErrorPage from './components/ErrorPage';
-import Posts from './components/Posts';
-import Users from './components/Users';
-
-// const router = createBrowserRouter([
-//   {
-//     element: <NavBar/>,
-//     children: [
-//       { path: "/posts", element: <Posts/> },
-//       { path: "/home", element: <Users/> },
-//       { path: "/*", element: <h1>Strona nie istnieje</h1> },
-//     ],
-//   },
-// ]);
+import WebsiteLayout from './components/WebsiteLayout';
+import ErrorPage from './components/routes/ErrorPage';
+import Posts from './components/routes/Posts';
+import Users from './components/routes/Users';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <NavBar />,
+    element: <WebsiteLayout />,
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/posts",
-        element: <h1>posts</h1>,
+        path: "/",
+        element: <Posts />,
+      },
+      {
+        path: "users",
+        element: <Users />,
       },
     ],
   },
 ]);
+
 
 const App = () => {
   return <RouterProvider router={router}/>

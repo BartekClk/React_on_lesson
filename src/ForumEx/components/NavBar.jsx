@@ -8,7 +8,7 @@ const NavBar = () => {
       <h2 className='text-white' >Forum example</h2>
     </div>
     <div className='col d-flex justify-content-center align-items-center' >
-      <Link className='link' to="posts">Posts</Link>
+      <Link className='link' to="">Posts</Link>
       <Link className='link' to="users">Users</Link>
     </div>
     </nav>
