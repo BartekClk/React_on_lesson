@@ -13,6 +13,10 @@ import ErrorPage from './components/routes/ErrorPage';
 import Posts from './components/routes/Posts';
 import Users from './components/routes/Users';
 
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.js';
+
 const router = createBrowserRouter([
   {
     path: "/",

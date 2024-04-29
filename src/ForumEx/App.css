@@ -19,3 +19,8 @@ nav .link:hover{
   color: var(--bs-primary);
   transform: translateY(-10%);
 }
+
+.search{
+  width: 50% !important;
+  min-width: 400px;
+}
