@@ -1,88 +1,79 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom";
 
-const Post = ({ title, content, authorId}) => {
+const Post = ({ title, body, userId, id, users}) => {
   return (
     <div className='col mb-5'>
       <div className='card'>
         <div className='card-body'>
+          <div className="text-secondary">{"Post "+id}</div>
           <h5 className='card-title'>{title}</h5>
-          <p className='card-text'>{content}</p>
-          <Link className='link' to={'/users?id='+authorId}>Author: {authors[authorId][0].name}</Link>
+          <p className='card-text'>{body}</p>
+          <Link className='link' to={'/users?id='+userId}>Author: {users[userId-1].name} </Link>
         </div>
       </div>
     </div>
   );
 };
 
-const PostsMap = ({ dataArray }) => {
+const PostsMap = ({ dataArray, users }) => {
   return (
     <div className="row row-cols-3 mt-4 gx-4">
       {dataArray.map((item, index) => (
         <Post
           key={index}
           title={item.title}
-          content={item.content}
-          authorId={item.authorId}
+          body={item.body}
+          userId={item.userId}
+          id={item.id}
+          users={users}
         />
       ))}
     </div>
   );
 };
 
-const initData = {
-  "posts": [
-  {
-    "id": 1,
-    "title": "First Post",
-    "content": "This is the content of the first post.",
-    "authorId": 1
-  },
-  {
-    "id": 2,
-    "title": "Second Post",
-    "content": "This is the content of the second post.",
-    "authorId": 2
-  },
-  {
-    "id": 3,
-    "title": "Third Post",
-    "content": "This is the content of the third post.",
-    "authorId": 1
-  },
-  {
-    "id": 4,
-    "title": "Fourth Post",
-    "content": "This is the content of the Fourth post.",
-    "authorId": 2
-  },
-  {
-    "id": 5,
-    "title": "Fifth Post",
-    "content": "This is the content of the fifth post.",
-    "authorId": 2
-  }]
-}
 
-const authors = {
-  1: [{
-      "username": "user1",
-      "name": "John Doe",
-      "email": "john@example.com"
-}],
-  2: [{
-      "username": "user2",
-      "name": "Jane Smith",
-      "email": "jane@example.com"
-}]
-}
 
 const Posts = () => {
-  const [data, setData] = useState(initData);
+  const [data, setData] = useState([]);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network error: ' + response.status + ' - ' + response.statusText);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setUsers(data);
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network error: ' + response.status + ' - ' + response.statusText);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setData(data);
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+  }, []);
 
   return (
     <div className="container">
-        <PostsMap dataArray={data.posts} />
+        <PostsMap dataArray={data} users={users} />
     </div>
   );
 };
