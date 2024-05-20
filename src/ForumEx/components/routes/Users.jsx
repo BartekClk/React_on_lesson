@@ -1,67 +1,10 @@
 import React, { useState, useEffect } from "react"
-import { Link } from "react-router-dom";
+import { Link, Navigate, redirect, useSearchParams } from "react-router-dom";
 
-const posts = {
-  "posts": [
-  {
-    "id": 1,
-    "title": "First Post",
-    "content": "This is the content of the first post.",
-    "authorId": 1
-  },
-  {
-    "id": 2,
-    "title": "Second Post",
-    "content": "This is the content of the second post.",
-    "authorId": 2
-  },
-  {
-    "id": 3,
-    "title": "Third Post",
-    "content": "This is the content of the third post.",
-    "authorId": 1
-  },
-  {
-    "id": 4,
-    "title": "Fourth Post",
-    "content": "This is the content of the Fourth post.",
-    "authorId": 2
-  },
-  {
-    "id": 5,
-    "title": "Fifth Post",
-    "content": "This is the content of the fifth post.",
-    "authorId": 2
-  }]
-}
-
-const authors = {
-  authors:[{
-      "id": 1,
-      "username": "user1",
-      "name": "John Doe",
-      "email": "john@example.com"
-},
-{
-      "id": 2,
-      "username": "user2",
-      "name": "Jane Smith",
-      "email": "jane@example.com"
-}]
-}
-const authors1 = {
-  authors:[{
-      "id": 1,
-      "username": "user1",
-      "name": "John Doe",
-      "email": "john@example.com"
-}]
-}
-
-const User = ({ title, content, authorId}) => {
+const User = ({ title, name, content, authorId, posts}) => {
   var postsN = 0;
-  posts.posts.map((item, index) => {
-    if (item.authorId == authorId) {
+  posts.map((item, index) => {
+    if (item.userId == authorId) {
       postsN++;
     }
   });
@@ -71,6 +14,7 @@ const User = ({ title, content, authorId}) => {
       <div className='card'>
         <div className='card-body'>
           <h5 className='card-title'>{title}</h5>
+          <p className='card-text'>{name}</p>
           <p className='card-text'>{content}</p>
           <Link className='link' to={'/?id='+authorId}>Posts: {postsN}</Link>
         </div>
@@ -79,19 +23,36 @@ const User = ({ title, content, authorId}) => {
   );
 };
 
-const UsersMap = ({ dataArray }) => {
-  return (
-    <div className="row row-cols-3 mt-4 gx-4">
-      {dataArray.map((item, index) => (
+const UsersMap = ({ dataArray, posts, searchedUser }) => {
+  if(searchedUser != '-1'){
+    return (
+      <div className="row row-cols-3 mt-4 gx-4">
+        {dataArray.map((item, index) => (
+          <User
+            key={index}
+            title={item.username}
+            name = {item.name}
+            content={item.email}
+            authorId={item.id}
+            posts={posts}
+          />
+        ))}
+      </div>
+    );
+  }else{
+    return (
+      <div className="row row-cols-3 mt-4 gx-4">
         <User
           key={index}
           title={item.username}
+          name = {item.name}
           content={item.email}
           authorId={item.id}
+          posts={posts}
         />
-      ))}
-    </div>
-  );
+      </div>
+    );
+  }
 };
 
 const Users = () => {
@@ -108,6 +69,7 @@ const Users = () => {
       })
       .then(data => {
         setUsers(data);
+        console.log(data);
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
@@ -124,6 +86,7 @@ const Users = () => {
       })
       .then(data => {
         setData(data);
+        console.log(data);
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
@@ -134,12 +97,39 @@ const Users = () => {
   const [userId, setUserId] = useState('');
 
   const search = () => {
-    // try{
-    //   if(userName!='')
-    // }catch(e){
-    //   alert('User not found');
-    // }
+    try{
+      if(userId!=''){
+        var user = users.find(x => x.id == userId);
+        if(user != undefined){
+          window.location.href = '/users?id='+userId;
+        }
+      }
+      else if(userName!=''){
+        var user = users.find(x => x.username == userName);
+        if(user == undefined){
+          throw 'User not found';
+        }else{
+          window.location.href = '/users?id='+user.id;
+        }
+      }
+    }catch(e){
+      alert('User not found');
+    }
   };
+
+  const [searchParams] = useSearchParams();
+
+  const [searchedUser, setSearchedUser] = useState('');
+
+  useEffect(() => {
+    // Check if 'variable' is in the URL
+    if (searchParams.has('id')) {
+      const id = searchParams.get('id');
+      setSearchedUser(id);
+    } else {
+      setSearchedUser('-1');
+    }
+  }, [searchParams]);
 
   return (
     <div className="container">
@@ -151,7 +141,7 @@ const Users = () => {
           <input type="number" min={1} max={2} className="form-control" placeholder="ID" aria-label="Username" aria-describedby="basic-addon1" onChange={(e)=>{setUserId(e.target.value)}}/>
         </div>
       </div>
-      {/* <UsersMap dataArray={users} /> */}
+      <UsersMap dataArray={users} posts={data} searchedUser={searchedUser} />
     </div>
   );
 };
