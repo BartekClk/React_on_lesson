@@ -16,15 +16,15 @@ const User = ({ title, name, content, authorId, posts}) => {
           <h5 className='card-title'>{title}</h5>
           <p className='card-text'>{name}</p>
           <p className='card-text'>{content}</p>
-          <Link className='link' to={'/?id='+authorId}>Posts: {postsN}</Link>
+          <p> Posts: {postsN}</p>
         </div>
       </div>
     </div>
   );
 };
 
-const UsersMap = ({ dataArray, posts, searchedUser }) => {
-  if(searchedUser != '-1'){
+const UsersMap = ({dataArray, posts}) => {
+  if(dataArray[0]!==undefined){
     return (
       <div className="row row-cols-3 mt-4 gx-4">
         {dataArray.map((item, index) => (
@@ -39,25 +39,20 @@ const UsersMap = ({ dataArray, posts, searchedUser }) => {
         ))}
       </div>
     );
-  }else{
-    return (
-      <div className="row row-cols-3 mt-4 gx-4">
-        <User
-          key={index}
-          title={item.username}
-          name = {item.name}
-          content={item.email}
-          authorId={item.id}
-          posts={posts}
-        />
-      </div>
-    );
   }
 };
 
 const Users = () => {
   const [data, setData] = useState([]);
   const [users, setUsers] = useState([]);
+  const [usersToShow, setUsersToShow] = useState([]);
+
+  
+  const [searchParams] = useSearchParams();
+  const [searchedUser, setSearchedUser] = useState('');
+
+  const [userName, setUserName] = useState('');
+  const [userId, setUserId] = useState('');
 
   useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/users')
@@ -69,7 +64,6 @@ const Users = () => {
       })
       .then(data => {
         setUsers(data);
-        console.log(data);
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
@@ -86,15 +80,11 @@ const Users = () => {
       })
       .then(data => {
         setData(data);
-        console.log(data);
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
       });
   }, []);
-
-  const [userName, setUserName] = useState('');
-  const [userId, setUserId] = useState('');
 
   const search = () => {
     try{
@@ -102,24 +92,24 @@ const Users = () => {
         var user = users.find(x => x.id == userId);
         if(user != undefined){
           window.location.href = '/users?id='+userId;
+        }else{
+          throw new Error('User not found');
         }
       }
       else if(userName!=''){
         var user = users.find(x => x.username == userName);
         if(user == undefined){
-          throw 'User not found';
+          throw new Error('User not found');
         }else{
           window.location.href = '/users?id='+user.id;
         }
+      }else if(userName=='' && userId==''){
+        window.location.href = '/users';
       }
     }catch(e){
-      alert('User not found');
+      alert(e.message);
     }
   };
-
-  const [searchParams] = useSearchParams();
-
-  const [searchedUser, setSearchedUser] = useState('');
 
   useEffect(() => {
     // Check if 'variable' is in the URL
@@ -131,6 +121,15 @@ const Users = () => {
     }
   }, [searchParams]);
 
+  useEffect(() => {
+    if(searchedUser != '-1'){
+      var user = users[searchedUser-1];
+      setUsersToShow([user]);
+    }else{
+      setUsersToShow(users);
+    }
+  }, [searchedUser, users]);
+
   return (
     <div className="container">
       <div className="container mt-5 search" >
@@ -141,7 +140,7 @@ const Users = () => {
           <input type="number" min={1} max={2} className="form-control" placeholder="ID" aria-label="Username" aria-describedby="basic-addon1" onChange={(e)=>{setUserId(e.target.value)}}/>
         </div>
       </div>
-      <UsersMap dataArray={users} posts={data} searchedUser={searchedUser} />
+      <UsersMap dataArray={usersToShow} posts={data} searchedUser={searchedUser} />
     </div>
   );
 };

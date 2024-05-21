@@ -71,11 +71,18 @@ const Posts = () => {
       });
   }, []);
 
-  return (
-    <div className="container">
-        <PostsMap dataArray={data} users={users} />
-    </div>
-  );
+  if (data.length === 0 || users.length === 0) {
+    return (
+      <div className="container">
+      </div>
+    );
+  }else{
+    return (
+      <div className="container">
+          <PostsMap dataArray={data} users={users} />
+      </div>
+    );
+  }
 };
 
 export default Posts;
